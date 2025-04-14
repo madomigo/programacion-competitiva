@@ -1,4 +1,4 @@
-// Max Flow using Didic's algorithm
+// Max Flow using Dinic's algorithm
 
 // Definición de la arista para el grafo de flujo.
 struct Edge {
