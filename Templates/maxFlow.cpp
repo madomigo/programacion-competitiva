@@ -1,19 +1,19 @@
 struct Dinic {
-	using F = ll; // flow type
+	using F = int; // flow type
 	struct Edge { int to; F flo, cap; };
-	int N; V<Edge> eds; V<vi> adj;
-	void init(int _N) { N = _N; adj.rsz(N), cur.rsz(N); }
-	/// void reset() { each(e,eds) e.flo = 0; }
+	int N; vector<Edge> eds; vvi adj;
+	void init(int _N) { N = _N; adj.resize(N), cur.resize(N); }
+	void reset() { for(auto e : eds) e.flo = 0; }
 	void ae(int u, int v, F cap, F rcap = 0) { assert(min(cap,rcap) >= 0); 
-		adj[u].pb(sz(eds)); eds.pb({v,0,cap});
-		adj[v].pb(sz(eds)); eds.pb({u,0,rcap});
+		adj[u].push_back(eds.size()); eds.push_back({v,0,cap});
+		adj[v].push_back(eds.size()); eds.push_back({u,0,rcap});
 	}
-	vi lev; V<vi::iterator> cur;
+	vi lev; vector<vi::iterator> cur;
 	bool bfs(int s, int t) { // level = shortest distance from source
-		lev = vi(N,-1); F0R(i,N) cur[i] = begin(adj[i]);
+		lev = vi(N,-1); for(int i = 0; i < N; i++) cur[i] = begin(adj[i]);
 		queue<int> q({s}); lev[s] = 0; 
-		while (sz(q)) { int u = q.ft; q.pop();
-			each(e,adj[u]) { const Edge& E = eds[e];
+		while (q.size()) { int u = q.front(); q.pop();
+			for (auto e : adj[u]) { const Edge& E = eds[e];
 				int v = E.to; if (lev[v] < 0 && E.flo < E.cap) 
 					q.push(v), lev[v] = lev[u]+1;
 			}
